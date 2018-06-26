@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 function log(logmessage){
-if(false){
+if(true){
     console.log(logmessage);
 }
 }
@@ -101,26 +101,27 @@ function solveQuests() {
 
                }
             }
-
-
-
-
-
     }
 }
 }
 
 function solvePlanetName(text){
+    var indexN;
+    var n;
+    var indexBracket1;
+    var indexBracket2;
+    var planetName;
+
     if(text.includes("Nth ")){
-        var indexN=text.indexOf("Nth ");
-        var n = parseInt(text.substr(indexN+4,indexN+5));
+        indexN=text.indexOf("Nth ");
+        n = parseInt(text.substr(indexN+4,indexN+5));
         log(n);
 
-        var indexBracket1=text.indexOf("(");
-        var indexBracket2=text.indexOf(")");
+        indexBracket1=text.indexOf("(");
+        indexBracket2=text.indexOf(")");
         var letterArray = text.substr(indexBracket1+3,indexBracket2).split(" ");
         log(letterArray);
-        var planetName = "";
+        planetName = "";
         for(var letterIndex = n-1; letterIndex<letterArray.length; letterIndex+=5){
             planetName=planetName+letterArray[letterIndex];
         }
@@ -128,19 +129,57 @@ function solvePlanetName(text){
         return planetName;
 
     }
+    if(text.includes("A to Z ")){
+        indexN=text.indexOf("A to Z ");
+        n = parseInt(text.substr(indexN+8,indexN+9));
+        log(n);
+
+        indexBracket1=text.indexOf("(");
+        indexBracket2=text.indexOf(")");
+
+        var re = new RegExp(' ', 'g');
+
+        var letters = text.substr(indexBracket1+3,(indexBracket2-2)).replace(re,'');
+        log(letters);
+        planetName = caesarCipher(letters, n);
+
+        log("Planetname: "+planetName);
+        return planetName;
+    }
+    if(text.includes("A=")){
+        indexN=text.indexOf("A=");
+        n = parseInt(text.substr(indexN+2,indexN+3));
+        log(n);
+
+        indexBracket1=text.indexOf("(");
+        indexBracket2=text.indexOf(")");
+
+        letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+
+        var numberArray = text.substr(indexBracket1+3,(indexBracket2-2)).split(" ");
+        log(letterArray);
+        planetName = "";
+        for(var index = 0; index<numberArray.length-1; index+=1){
+            planetName+=letters[(parseInt(numberArray[index])-n)%letters.length];
+        }
+
+        log("Planetname: "+planetName);
+        return planetName;
+    }
+
 }
 
 function solveDistance(text){
     var indexBracket1=text.indexOf("(");
     var indexBracket2=text.indexOf(")");
-    var numberArray = text.substr(indexBracket1+3,indexBracket2).split(" , ");
+    var numberArray = text.substr(indexBracket1+2,indexBracket2).split(" , ");
     log(numberArray);
 
     var result = -1;
 
     if((numberArray[0] % numberArray[1] == 0) && (numberArray[1] % numberArray[2] == 0) && (numberArray[2] % numberArray[3] == 0)){
         //divide
-        result = numberArray[3]/(numberArray[1]/numberArray[2]);
+        result = parseInt(numberArray[3])/(parseInt(numberArray[1])/parseInt(numberArray[2]));
     } else {
         //substract
         result = numberArray[3]-(numberArray[1]-numberArray[2]);
@@ -158,8 +197,29 @@ var indexColon=text.indexOf(":");
 
 function solveSingleCoordinate(text){
         log("solving "+text);
-    var eq = algebra.parse(text.replace(" ","").replace("x","*").replace("?","a"));
-    return eq.solveFor("a");
+    if(text.includes("=")){
+       var eq = algebra.parse(text.replace(" ","").replace("x","*").replace("?","a"));
+        return eq.solveFor("a");
+    } else {
+        return solveDistance(text);
+    }
+}
+
+function caesarCipher(str, num) {
+    var letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+
+    var result = '';
+    for (var i = 0; i < str.length; i++) {
+        var char = str[i];
+        log(char);
+        for (var j = 0; j < letters.length; j++) {
+            if(char==letters[j]){
+                result += letters[(j+num)% letters.length];
+            }
+        }
+    }
+    return result;
+
 }
 
 function isValidQuestDescription(strong){
