@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 function log(logmessage){
-if(true){
+if(false){
     console.log(logmessage);
 }
 }
