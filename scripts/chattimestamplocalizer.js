@@ -13,7 +13,7 @@
 // ==/UserScript==
 
 function log(text){
-    if(true){
+    if(false){
         console.log(text);
     }
 }
