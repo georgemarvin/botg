@@ -24,7 +24,7 @@ function solveQuests() {
     var strongs = eventInfo.getElementsByTagName("strong");
     for(var i = 0; i<strongs.length; i++){
 
-        if(isValidQuestDescription(strongs[i])){
+        if(isValidAXQuestDescription(strongs[i])){
 
            var planetName = solvePlanetName(strongs[i].childNodes[0].data);
             var distance = solveDistance(strongs[i].childNodes[2].data);
@@ -101,6 +101,27 @@ function solveQuests() {
 
                }
             }
+    } else if (isValidA5QuestDescription(strongs[i])){
+        planetName = solvePlanetName(strongs[i].childNodes[0].data);
+        log("planet: "+planetName);
+        coord1 = solveCoordinates(strongs[i].childNodes[2].data.substr(12,strongs[i].childNodes[2].data.length));
+        log("coordinate1.x: "+coord1.x+ " - coordinate1.y: "+coord1.y);
+
+        //Output
+        br1 = document.createElement ('br');
+        br2 = document.createElement ('br');
+        resultPlanet = document.createElement ('strong');
+        resultPlanet.innerHTML = 'Solved location name: '+planetName;
+        strongs[i].parentElement.appendChild(br1);
+        strongs[i].parentElement.appendChild(br2);
+        strongs[i].parentElement.appendChild(resultPlanet);
+
+        brCoordinate = document.createElement ('br');
+        resultCoordinate = document.createElement ('strong');
+        resultCoordinate.innerHTML = 'Coordinate: ( '+coord1.x+' : '+coord1.y+' )';
+
+        strongs[i].parentElement.appendChild(brCoordinate);
+        strongs[i].parentElement.appendChild(resultCoordinate);
     }
 }
 }
@@ -222,9 +243,9 @@ function caesarCipher(str, num) {
 
 }
 
-function isValidQuestDescription(strong){
+function isValidA5QuestDescription(strong){
 var foundPlanethName = false;
-    var foundDistance = false;
+
     var foundCoordinates = false;
 
     for(var i = 0; i<strong.childNodes.length; i++){
@@ -233,17 +254,32 @@ var foundPlanethName = false;
            foundPlanethName=true;
            }
 
-        if(strong.childNodes[i].data.startsWith("Distance:")){
-           foundDistance=true;
-           }
-
         if(strong.childNodes[i].data.startsWith("Coordinates:")){
            foundCoordinates=true;
            }
         }
     }
 
-    return foundCoordinates && foundDistance && foundPlanethName;
+    return foundCoordinates && foundPlanethName;
+}
+
+function isValidAXQuestDescription(strong){
+
+    var foundDistance = false;
+    
+
+    for(var i = 0; i<strong.childNodes.length; i++){
+        if(typeof strong.childNodes[i].data !== 'undefined'){
+        
+
+        if(strong.childNodes[i].data.startsWith("Distance:")){
+           foundDistance=true;
+           }
+        
+        }
+    }
+
+    return isValidA5QuestDescription(strong) && foundDistance;
 }
 
 waitForKeyElements("#ctl00_ContentPlaceHolder1_fvEventMainInfo", solveQuests);
