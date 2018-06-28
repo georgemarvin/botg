@@ -122,6 +122,18 @@ function solveQuests() {
 
         strongs[i].parentElement.appendChild(brCoordinate);
         strongs[i].parentElement.appendChild(resultCoordinate);
+    } else if (isValidA1QuestDescription(strongs[i])){
+        coord1 = solveCoordinates(strongs[i].innerText);
+        log("coordinate1.x: "+coord1.x+ " - coordinate1.y: "+coord1.y);
+
+        //Output
+        br1 = document.createElement ('br');
+        br2 = document.createElement ('br');
+        strongs[i].parentElement.appendChild(br1);
+        strongs[i].parentElement.appendChild(br2);
+        resultCoordinate = document.createElement ('strong');
+        resultCoordinate.innerHTML = 'Coordinate: ( '+coord1.x+' : '+coord1.y+' )';
+        strongs[i].parentElement.appendChild(resultCoordinate);
     }
 }
 }
@@ -143,7 +155,7 @@ function solvePlanetName(text){
         var letterArray = text.substr(indexBracket1+3,indexBracket2).split(" ");
         log(letterArray);
         planetName = "";
-        for(var letterIndex = n-1; letterIndex<letterArray.length; letterIndex+=5){
+        for(var letterIndex = n-1; letterIndex<letterArray.length; letterIndex+=n){
             planetName=planetName+letterArray[letterIndex];
         }
         log("Planetname: "+planetName);
@@ -203,7 +215,14 @@ function solveDistance(text){
         result = parseInt(numberArray[3])/(parseInt(numberArray[1])/parseInt(numberArray[2]));
     } else {
         //substract
-        result = numberArray[3]-(numberArray[1]-numberArray[2]);
+        var diffs = [numberArray[0]-numberArray[1],numberArray[1]-numberArray[2],numberArray[2]-numberArray[3]];
+            log("diffs: "+diffs);
+        if(diffs[0]!=diffs[2]){
+            log("diff changes!");
+            result = numberArray[3]-(diffs[2]-1);
+        } else {
+            result = numberArray[3]-(numberArray[1]-numberArray[2]);
+        }
     }
     log("Distance: "+result);
     return result;
@@ -241,6 +260,10 @@ function caesarCipher(str, num) {
     }
     return result;
 
+}
+
+function isValidA1QuestDescription(strong){
+    return strong.innerText.includes("?") && strong.innerText.includes(":");
 }
 
 function isValidA5QuestDescription(strong){
