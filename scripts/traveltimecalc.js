@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  BOTG Traveltime Calculator
 // @author       Marvin George
-// @match        http://baronsofthegalaxy.com/assets.aspx?tid=*
+// @match        http://*baronsofthegalaxy.com/assets.aspx?tid=*
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
 // ==/UserScript==
