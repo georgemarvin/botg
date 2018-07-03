@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  BOTG Quest Solver
 // @author       Marvin George
-// @match        http://baronsofthegalaxy.com/corporate_politics.aspx?eventid=*
+// @match        http://*baronsofthegalaxy.com/corporate_politics.aspx?eventid=*
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // @require http://algebra.js.org/javascripts/algebra-0.2.6.min.js
