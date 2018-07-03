@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  BOTG Chat Timestamp Localizer
 // @author       Marvin George
-// @match        http://baronsofthegalaxy.com/comms.aspx
+// @match        http://*baronsofthegalaxy.com/comms.aspx
 // @require  https://momentjs.com/downloads/moment.min.js
 // @require  https://momentjs.com/downloads/moment-timezone-with-data-2012-2022.min.js
 // @require  http://code.jquery.com/jquery-1.7.1.min.js
