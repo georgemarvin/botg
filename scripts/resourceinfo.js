@@ -11,7 +11,7 @@
 // ==/UserScript==
 
 function log(text){
-    if(true){
+    if(false){
         console.log(text);
     }
 }
@@ -40,11 +40,14 @@ function start() {
 
         var row = body.children[i];
 
-        if(i==0 && body.children.length>1){
+        if(i==0){
+            if(body.children.length>1){
             var header = document.createElement('th')
             header.innerHTML = "#turns_rem";
             row.appendChild(header);
+            }
         } else {
+log(row)
 
         var req = parseInt(row.children[1].innerHTML.replace(',',''));
         var out = parseInt(row.children[2].innerHTML.replace(',',''));
